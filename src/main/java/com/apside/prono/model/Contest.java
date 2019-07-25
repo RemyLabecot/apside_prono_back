@@ -12,7 +12,7 @@ public class Contest {
 
     private String label;
 
-    public long getId() {
+    public Long getId() {
         return id;
     }
 

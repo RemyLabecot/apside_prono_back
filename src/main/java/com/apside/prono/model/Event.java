@@ -24,7 +24,7 @@ public class Event {
     @JoinColumn(name = "contest_id", nullable = false)
     private Contest contest;
 
-    public long getId() {
+    public Long getId() {
         return id;
     }
 

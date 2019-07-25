@@ -21,7 +21,8 @@ public class PlayerService {
 
     @Transactional
     public void createPlayer(Player player) {
-        if (player.getFirstName() == null || player.getLastName() == null || player.getMail() == null || player.getSubscriptionDate() == null) {
+        if (player.getFirstName() == null || player.getLastName() == null
+                || player.getMail() == null || player.getSubscriptionDate() == null) {
             throw new InvalidPlayerDataException();
         } else {
             playerRepository.save(player);
