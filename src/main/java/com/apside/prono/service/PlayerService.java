@@ -1,5 +1,6 @@
 package com.apside.prono.service;
 
+import com.apside.prono.errors.InvalidPlayerDataException;
 import com.apside.prono.errors.PlayerUnknownException;
 import com.apside.prono.model.Player;
 import com.apside.prono.repository.PlayerRepository;
@@ -20,10 +21,15 @@ public class PlayerService {
 
     @Transactional
     public void createPlayer(Player player) {
-        playerRepository.save(player);
+        if (player.getFirstName() == null || player.getLastName() == null || player.getMail() == null || player.getSubscriptionDate() == null) {
+            throw new InvalidPlayerDataException();
+        } else {
+            playerRepository.save(player);
+        }
     }
 
     public Player getPlayerById(Long id) throws PlayerUnknownException {
+
         return playerRepository.findById(id).get();
     }
 
@@ -31,15 +37,22 @@ public class PlayerService {
     public void deletePlayer(Long id) {
         if (playerRepository.existsById(id)) {
             playerRepository.deleteById(id);
+        } else {
+            throw new InvalidPlayerDataException();
         }
     }
 
     @Transactional
     public Player updatePlayer(Player player) {
-        Player playerUpdate = new Player();
-        if (playerRepository.existsById(player.getId())) {
-            playerUpdate = playerRepository.save(player);
+
+        if (player.getFirstName() == null || player.getLastName() == null || player.getMail() == null || player.getSubscriptionDate() == null) {
+            throw new InvalidPlayerDataException();
+        } else {
+            Player playerUpdate = new Player();
+            if (playerRepository.existsById(player.getId())) {
+                playerUpdate = playerRepository.save(player);
+            }
+            return playerUpdate;
         }
-        return playerUpdate;
     }
 }

@@ -14,36 +14,36 @@ import com.apside.prono.model.Event;
 import com.apside.prono.service.EventService;
 
 @RestController
-@RequestMapping(value="/event")
+@RequestMapping(value = "/event")
 public class EventRestController {
 
-	@Autowired 
-	private EventService eventService;
-	
-	@GetMapping(produces = "application/json", path="/allevent")
-	public Iterable<Event> getAllEvents() {
+    @Autowired
+    private EventService eventService;
 
-	return  eventService.getAllEvents();
-	}
-	
-	@PostMapping(consumes = "application/json", path="/newevent")
-	public Event createEvent(@RequestBody Event event) {
-		
-	return eventService.createEvent(event);
-	}
-	
-	@GetMapping(produces = "application/json", path="/{id}")
-	public Event getEventById(@PathVariable Long id) {
-		return eventService.getEventById(id);
-	}
-	
-	@PutMapping(consumes = "application/json", produces = "application/json", path="/modifyevent")
-	public Event modifyEvent(@RequestBody Event event)  {
-		return eventService.modifyEvent(event);
-	}
+    @GetMapping(produces = "application/json", path = "/allevent")
+    public Iterable<Event> getAllEvents() {
 
-	@DeleteMapping(path="/deleteplayer")
-	public void deleteEvent(@RequestBody Event event)  {
-		eventService.deleteEvent(event);
-	}
+        return eventService.getAllEvents();
+    }
+
+    @PostMapping(consumes = "application/json", path = "/newevent")
+    public Event createEvent(@RequestBody Event event) {
+
+        return eventService.createEvent(event);
+    }
+
+    @GetMapping(produces = "application/json", path = "/{id}")
+    public Event getEventById(@PathVariable Long id) {
+        return eventService.getEventById(id);
+    }
+
+    @PutMapping(consumes = "application/json", produces = "application/json", path = "/modifyevent")
+    public Event modifyEvent(@RequestBody Event event) {
+        return eventService.modifyEvent(event);
+    }
+
+    @DeleteMapping(path = "/deleteplayer")
+    public void deleteEvent(@RequestBody Event event) {
+        eventService.deleteEvent(event);
+    }
 }

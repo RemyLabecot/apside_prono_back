@@ -1,6 +1,6 @@
 package com.apside.prono.errors;
 
-public class PronoException extends Exception {
+public class PronoException extends RuntimeException {
 
     public PronoException() {
     }

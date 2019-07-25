@@ -1,54 +1,64 @@
 package com.apside.prono.controller;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
 
+import com.apside.prono.errors.InvalidPlayerDataException;
+import com.apside.prono.errors.PlayerUnknownException;
 import com.apside.prono.model.Player;
 import com.apside.prono.service.PlayerService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.util.UriComponentsBuilder;
+
+import java.net.URI;
 
 
 @CrossOrigin
 @RestController
-@RequestMapping(value="/player")
 public class PlayerRestController {
 
-	@Autowired
-	private PlayerService playerService;
+    @Autowired
+    private PlayerService playerService;
 
-	@GetMapping(produces = "application/json", path="/allplayers")
-	public Iterable<Player> getAllPlayers() {
+    @GetMapping(produces = "application/json", path = "/player")
+    public Iterable<Player> getAllPlayers() {
 
-		return  playerService.getAllPlayers();
-	}
+        return playerService.getAllPlayers();
+    }
 
-	@PostMapping(consumes = "application/json", produces = "application/json", path="/newplayer")
-	public Player create(@RequestBody Player player) {
+    @GetMapping(produces = "application/json", path = "/player/{id}")
+    public Player getPlayerById(@PathVariable Long id) throws PlayerUnknownException {
+        Player findPlayer = new Player();
+        try {
+            findPlayer = playerService.getPlayerById(id);
+        } catch (PlayerUnknownException e) {
+            e.getMessage();
+        }
+        return findPlayer;
+    }
 
-		return playerService.createPlayer(player);
-	}
+    @PostMapping(consumes = "application/json", produces = "application/json", path = "/player")
+    public ResponseEntity<Player> createPlayer(@RequestBody Player player, UriComponentsBuilder uriBuilder) throws InvalidPlayerDataException {
+        if (player == null) {
+            throw new InvalidPlayerDataException();
+        } else {
+            playerService.createPlayer(player);
+            URI location = uriBuilder.path("/player/{id}").buildAndExpand(player.getId()).toUri();
+            return ResponseEntity.created(location).body(player);
+        }
+    }
 
-	@GetMapping(produces = "application/json", path="/{id}")
-	public Player getPlayerById(@PathVariable Long id) {
-		return playerService.getPlayerById(id);
-	}
+    @PutMapping(consumes = "application/json", produces = "application/json", path = "/player")
+    public Player updatePlayer(@RequestBody Player player) {
+        if (player == null) {
+            throw new InvalidPlayerDataException();
+        } else {
+            return playerService.updatePlayer(player);
+        }
+    }
 
-	@PutMapping(consumes = "application/json", produces = "application/json", path="/modifyplayer")
-	public Player modifyPlayer(@RequestBody Player player)  {
-		return playerService.modifyPlayer(player);
-	}
-	
-	@DeleteMapping(produces = "application/json", path="/deleteplayer")
-	public void deletePlayer(@RequestBody Player player)  {
-		playerService.deletePlayer(player);
-	}
+    @DeleteMapping(path = "/player/{id}")
+    public void deletePlayer(@PathVariable Long id) {
+        playerService.deletePlayer(id);
+    }
 }
-
-//fs.campus-cd.net
