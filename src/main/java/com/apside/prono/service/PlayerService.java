@@ -5,7 +5,6 @@ import com.apside.prono.model.Player;
 import com.apside.prono.repository.PlayerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestBody;
 
 import javax.transaction.Transactional;
 
@@ -20,8 +19,8 @@ public class PlayerService {
     }
 
     @Transactional
-    public Player createPlayer(@RequestBody Player player) {
-        return playerRepository.save(player);
+    public void createPlayer(Player player) {
+        playerRepository.save(player);
     }
 
     public Player getPlayerById(Long id) throws PlayerUnknownException {

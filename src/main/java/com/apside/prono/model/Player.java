@@ -1,25 +1,38 @@
 package com.apside.prono.model;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+
+import net.minidev.json.annotate.JsonIgnore;
+
+import javax.persistence.*;
 import java.util.Date;
 
 @Entity
+@Table(name = "player")
 public class Player {
 
     //@Temporal(TemporalType.TIMESTAMP)
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "ID")
     private Long id;
-
     private String firstName;
     private String lastName;
     private String mail;
     private Date subscriptionDate;
 
-    public long getId() {
+    public Player() {
+        super();
+    }
+
+    public Player(Long id,String firstName, String lastName, String mail, Date subscriptionDate) {
+        this.id = id;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.mail = mail;
+        this.subscriptionDate = subscriptionDate;
+    }
+
+    public Long getId() {
         return id;
     }
 
@@ -57,5 +70,16 @@ public class Player {
 
     public void setSubscriptionDate(Date subscriptionDate) {
         this.subscriptionDate = subscriptionDate;
+    }
+
+    @Override
+    public String toString() {
+        return "Player{" +
+                "id=" + id +
+                ", firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", mail='" + mail + '\'' +
+                ", subscriptionDate=" + subscriptionDate +
+                '}';
     }
 }
