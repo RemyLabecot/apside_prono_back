@@ -1,8 +1,6 @@
 package com.apside.prono.model;
 
 
-import net.minidev.json.annotate.JsonIgnore;
-
 import javax.persistence.*;
 import java.util.Date;
 
@@ -20,11 +18,12 @@ public class Player {
     private String mail;
     private Date subscriptionDate;
 
+
     public Player() {
         super();
     }
 
-    public Player(Long id,String firstName, String lastName, String mail, Date subscriptionDate) {
+    public Player(Long id, String firstName, String lastName, String mail, Date subscriptionDate) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
