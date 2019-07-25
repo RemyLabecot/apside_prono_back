@@ -19,7 +19,23 @@ public class Player {
     private String mail;
     private Date subscriptionDate;
 
-    public long getId() {
+    
+
+	public Player(Long id, String firstName, String lastName, String mail, Date subscriptionDate) {
+		super();
+		this.id = id;
+		this.firstName = firstName;
+		this.lastName = lastName;
+		this.mail = mail;
+		this.subscriptionDate = subscriptionDate;
+	}
+
+	public Player() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
+
+	public long getId() {
         return id;
     }
 
