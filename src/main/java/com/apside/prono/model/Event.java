@@ -9,15 +9,10 @@ public class Event {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-
     private String label;
-
     private Date eventDate;
-
     private Date openDate;
-
     private Date closeDate;
-
     private long coeff;
 
     @ManyToOne(fetch = FetchType.LAZY)

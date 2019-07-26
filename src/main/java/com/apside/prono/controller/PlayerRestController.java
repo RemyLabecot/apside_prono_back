@@ -17,35 +17,34 @@ import com.apside.prono.service.PlayerService;
 
 @CrossOrigin
 @RestController
-@RequestMapping(value="/player")
 public class PlayerRestController {
 
 	@Autowired
 	private PlayerService playerService;
 
-	@GetMapping(produces = "application/json", path="/allplayers")
+	@GetMapping(produces = "application/json", path="/player")
 	public Iterable<Player> getAllPlayers() {
 
 		return  playerService.getAllPlayers();
 	}
 
-	@PostMapping(consumes = "application/json", produces = "application/json", path="/newplayer")
+	@PostMapping(consumes = "application/json", produces = "application/json", path="/player")
 	public Player create(@RequestBody Player player) {
 
 		return playerService.createPlayer(player);
 	}
 
-	@GetMapping(produces = "application/json", path="/{id}")
+	@GetMapping(produces = "application/json", path="/player/{id}")
 	public Player getPlayerById(@PathVariable Long id) {
 		return playerService.getPlayerById(id);
 	}
 
-	@PutMapping(consumes = "application/json", produces = "application/json", path="/modifyplayer")
+	@PutMapping(consumes = "application/json", produces = "application/json", path="/player")
 	public Player modifyPlayer(@RequestBody Player player)  {
 		return playerService.modifyPlayer(player);
 	}
 	
-	@DeleteMapping(produces = "application/json", path="/deleteplayer")
+	@DeleteMapping(produces = "application/json", path="/player")
 	public void deletePlayer(@RequestBody Player player)  {
 		playerService.deletePlayer(player);
 	}
