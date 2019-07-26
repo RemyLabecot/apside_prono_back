@@ -20,7 +20,7 @@ public class Event {
 
     private long coeff;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name = "contest_id", nullable = false)
     private Contest contest;
 

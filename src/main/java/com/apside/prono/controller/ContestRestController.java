@@ -51,8 +51,8 @@ public class ContestRestController {
         }
     }
 
-    @DeleteMapping(path = "/contest")
-    public void deleteContest(@RequestBody Long id) {
+    @DeleteMapping(path = "/contest/{id}")
+    public void deleteContest(@PathVariable Long id) {
         contestService.deleteContest(id);
     }
 }
