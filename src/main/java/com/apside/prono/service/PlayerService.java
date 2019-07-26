@@ -1,54 +1,59 @@
 package com.apside.prono.service;
 
-import javax.transaction.Transactional;
-
+import com.apside.prono.errors.InvalidPlayerDataException;
+import com.apside.prono.errors.PlayerUnknownException;
+import com.apside.prono.model.Player;
+import com.apside.prono.repository.PlayerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.apside.prono.errors.PlayerInconnuException;
-import com.apside.prono.model.Player;
-import com.apside.prono.repository.PlayerRepository;
-
+import javax.transaction.Transactional;
 
 @Service
 public class PlayerService {
 
-	@Autowired
-	private PlayerRepository  playerRepository;
+    @Autowired
+    private PlayerRepository playerRepository;
 
-	
-	public Iterable <Player> getAllPlayers () {
-		return playerRepository.findAll();
-	}
-	
-	@Transactional
-	public Player createPlayer(Player player) {
-		return playerRepository.save(player);
-	}
-	
-	public Player getPlayerById(Long id) throws PlayerInconnuException {
-		Player player = playerRepository.findById(id).get();
-		if(player==null) {
-			throw new PlayerInconnuException(id);
-		}
-		return player;
-	}
-	
-	@Transactional
-	public Player modifyPlayer(Player player) throws PlayerInconnuException {
-		Player playerModif = getPlayerById(player.getId());
+    public Iterable<Player> getAllPlayers() {
+        return playerRepository.findAll();
+    }
 
-		playerModif.setId(player.getId());
-		playerModif.setFirstName(player.getFirstName());
-		playerModif.setLastName(player.getLastName());
-		playerModif.setMail(player.getMail());
-		playerModif.setSubscriptionDate(player.getSubscriptionDate());
-		
-		return playerModif;
-	}
-	
-	@Transactional
-	public void deletePlayer(Player player) {
-		playerRepository.delete(player);
-	}
+    @Transactional
+    public void createPlayer(Player player) {
+        if (player.getFirstName() == null || player.getLastName() == null
+                || player.getMail() == null || player.getSubscriptionDate() == null) {
+            throw new InvalidPlayerDataException();
+        } else {
+            playerRepository.save(player);
+        }
+    }
+
+    public Player getPlayerById(Long id) throws PlayerUnknownException {
+
+        return playerRepository.findById(id).get();
+    }
+
+    @Transactional
+    public void deletePlayer(Long id) {
+        if (playerRepository.existsById(id)) {
+            playerRepository.deleteById(id);
+        } else {
+            throw new InvalidPlayerDataException();
+        }
+    }
+
+    @Transactional
+    public Player updatePlayer(Player player) {
+
+        if (player.getFirstName() == null || player.getLastName() == null || player.getMail() == null || player.getSubscriptionDate() == null) {
+            throw new InvalidPlayerDataException();
+        } else {
+            Player playerUpdate = new Player();
+            if (playerRepository.existsById(player.getId())) {
+                playerUpdate = playerRepository.save(player);
+            }
+            return playerUpdate;
+        }
+    }
 }
